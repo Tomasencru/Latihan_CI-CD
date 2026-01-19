@@ -6,7 +6,7 @@ services:
 
 variables:
   DOCKER_TLS_CERTDIR: ""
-  IMAGE_NAME: username_dockerhub/nama-image
+  IMAGE_NAME: $CI_REGISTRY_IMAGE
 
 stages:
   - build
@@ -14,12 +14,12 @@ stages:
 build_and_push:
   stage: build
   script:
-    # Login ke Docker Hub
-    - docker login -u "$DOCKERHUB_USERNAME" -p "$DOCKERHUB_PASSWORD"
+    # Login ke GitLab Container Registry
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
 
     # Build image
     - docker build -t $IMAGE_NAME:latest .
 
-    # Push image ke Docker Hub
+    # Push image ke GitLab Registry
     - docker push $IMAGE_NAME:latest
 ```

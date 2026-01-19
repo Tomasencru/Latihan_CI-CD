@@ -1,0 +1,25 @@
+```yaml
+image: docker:latest
+
+services:
+  - docker:dind
+
+variables:
+  DOCKER_TLS_CERTDIR: ""
+  IMAGE_NAME: username_dockerhub/nama-image
+
+stages:
+  - build
+
+build_and_push:
+  stage: build
+  script:
+    # Login ke Docker Hub
+    - docker login -u "$DOCKERHUB_USERNAME" -p "$DOCKERHUB_PASSWORD"
+
+    # Build image
+    - docker build -t $IMAGE_NAME:latest .
+
+    # Push image ke Docker Hub
+    - docker push $IMAGE_NAME:latest
+```
